@@ -98,13 +98,10 @@ Vérifications :
 5. Quel mécanisme proposé par Kubernetes devrons-nous utiliser ici pour exposer nos
 applications sur le web ?
 
-- L mécanisme de service discovery fourni par Kubernetes permet d'exposé les applitions web vers l'exterieur au travers d'adresse IP en fournissant aussi du load balancing. Exemple service de type NodePort.
-
+- Le mécanisme que nous devrons utiliser ici est le service discovery fourni par Kubernetes. Il permet d'exposer le service vers l'extérieur du cluster notement avec NodePort à l'aide du NAT (la plage de ports autorisés est entre 30000 et 32767).
 
 ![service NodePort](https://user-images.githubusercontent.com/97112379/155725981-903ba091-dae8-463a-b89b-f60ed7b3ebdd.png)
 ![service NodePort2](https://user-images.githubusercontent.com/97112379/155725995-4b19b830-c5ac-46de-817f-064095edf866.png)
-
-
 
 6. Supprimer les 2 replicasets.
 
@@ -186,17 +183,37 @@ Les autres sont disponible en cas de roolback.
 ![delete_deploy](https://user-images.githubusercontent.com/97112379/155747487-3201b3e7-5706-4ce6-b5b7-063220812236.png)
 
 
-##Exercice 5 - Manipulation de Services
+## Exercice 5 - Manipulation de Services
 
 1. Créer un déploiement nginx-deploiement à partir d’une image nginx.
+- kubectl create deployment nginx-deployment --image nginx:latest
+- kubectl get deployments.apps
+
+![deploy_nginxLatest](https://user-images.githubusercontent.com/97112379/155760276-e8fa598c-c954-4f8d-9a4e-4ee077b2c2da.png)
 
 
 2. Lier les containers du déploiement nginx-deployment avec un nouveau service de type
   ClusterIp nommer nginx-svc-cluster-ip.
+  
+  Je n'ai pas mis le type ClusterIp car selon --Help elle est implicite.
+  
+  - kubectl expose deployment nginx-deployment --port=8080 --target-port=80 --name=nginx-svc-cluster-ip
+   
+  ![Liaison-cont avec serv](https://user-images.githubusercontent.com/97112379/155770841-7519a0bc-1163-4273-bdd5-d393725212d0.png)
+
+ ![verif_serv](https://user-images.githubusercontent.com/97112379/155771145-2cb2fd9a-3489-4d0b-a8b4-54d38166d524.png)
+ 
+
 3. Récupérer l’adresse IP du service et le stocker dans un fichier nommer service-ip.txt
 
+- kubectl get services nginx-svc-cluster-ip -o custom-columns=SERVICE-IP:.spec.clusterIP > service-ip.xt
 
 4. Créer un pods nommé utils à partir d’une image nginx.
+
+- kubectl run utils --image nginx:latest
+
+- kubectl get podes
+
 
 6. Se connecter au pods utils ( kubectl exec -ti <nom-du-pod> – /bin/bash )
   
