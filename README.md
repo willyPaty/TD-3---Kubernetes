@@ -1,6 +1,7 @@
 ### TD-3---Kubernetes
 TD3 Kubernetes Ingénieur de spécialité Télécommunication et Informatique
 
+##
 ## Exercice 1 - Installation
 1. Installer la dernière version de Minikube
  
@@ -11,6 +12,7 @@ TD3 Kubernetes Ingénieur de spécialité Télécommunication et Informatique
 
 ![verification du bon fonctionnement](https://user-images.githubusercontent.com/97112379/155618800-16a023b3-ce2f-4612-8210-e4309f96150c.png)
 
+##
 ## Exercice 2 - Manipulation basique de pods
 
 1. Avec la méthode impérative, créer un pod nginx avec pour nom nginx-pod-imperatif.
@@ -53,7 +55,7 @@ Visualisation des podes créés.
   
 ![suppression_all nodes](https://user-images.githubusercontent.com/97112379/155684681-ab38ff9f-2cdb-4bf3-ab41-de5bf88ba7ac.png)
 
-  
+##  
 ##  Exercice 3 - Manipulation de replicasets
 
 1. Créer un réplicaset nommé webapp-replicaset-imperatif créer à partir de l’image que
@@ -109,7 +111,7 @@ applications sur le web ?
 
 ![sup replicatSet2](https://user-images.githubusercontent.com/97112379/155713409-30b0e1e5-cade-4c18-9e4f-eaef640765f1.png)
 
-
+##
 ## Exercice 4 - Manipulation de déploiements.
 
 1. Créer un deployment nommé nginx-deployment-imperatif créer à partir de l’image
@@ -180,7 +182,7 @@ Les autres sont disponible en cas de roolback.
 
 ![delete_deploy](https://user-images.githubusercontent.com/97112379/155747487-3201b3e7-5706-4ce6-b5b7-063220812236.png)
 
-
+##
 ## Exercice 5 - Manipulation de Services
 
 1. Créer un déploiement nginx-deploiement à partir d’une image nginx.
@@ -247,7 +249,8 @@ On a constaté que les pods ont une durée de vie très limité et sont à maint
 - NodePort : Il expose le service vers l'extérieur du cluster à l'aide du NAT.
  
 - LoadBalancer : Il utilise l’équilibreur de charge des fournisseurs de cloud. Ainsi, les services NodePort et ClusterIP sont créés automatiquement et sont acheminés par l'équilibreur de charge externe.
-  
+
+##
 ## Exercice 6 - Manipulation de Configmaps.
 
 1. Générer un confimaps nommer userdata avec pour valeur AGE=<votre-age>
