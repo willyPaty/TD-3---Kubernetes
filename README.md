@@ -69,7 +69,7 @@ avez poussé sur votre repository lors du précédent TP ( si vous n’avez pas 
 partir d’une image nginx ) de manière impérative.
 
 - Duplication du  fichier webapp-replicaset-declaratif.yaml et changement du nom par celui de la consigne.
-- 
+
 - execution de la commande declarative pour la crétion du replicaset
 
 - cp webapp-replicaset-declaratif.yaml webapp-replicaset-imperatif.yaml
@@ -293,6 +293,7 @@ USER_FIRST_NAME du pod nginx-pod
 7. Se connecter au pods en ssh avec la commande suivante ( kubect exec –ti <nom-du-pod>
 – /bin/bash )
  
+ J'ai des problème avec mon bash !!
  ![Probleme avec mon bash](https://user-images.githubusercontent.com/97112379/155821505-24eccee8-28ee-45ee-a163-6e2e368fbbc5.png)
 
   
