@@ -119,8 +119,6 @@ nginx:1.15.0
 
 ![imperatif_deployment](https://user-images.githubusercontent.com/97112379/155729878-7731862c-67d1-4f3a-8ac7-92cae767b707.png)
 
-
-
 2. Créer un deployment nommé webapp-deployment-declaratif créer à partir de l’image
 nginx:1.15.0
 
@@ -186,7 +184,9 @@ Les autres sont disponible en cas de roolback.
 ## Exercice 5 - Manipulation de Services
 
 1. Créer un déploiement nginx-deploiement à partir d’une image nginx.
+
 - kubectl create deployment nginx-deployment --image nginx:latest
+
 - kubectl get deployments.apps
 
 ![deploy_nginxLatest](https://user-images.githubusercontent.com/97112379/155760276-e8fa598c-c954-4f8d-9a4e-4ee077b2c2da.png)
@@ -195,36 +195,58 @@ Les autres sont disponible en cas de roolback.
 2. Lier les containers du déploiement nginx-deployment avec un nouveau service de type
   ClusterIp nommer nginx-svc-cluster-ip.
   
-  Je n'ai pas mis le type ClusterIp car selon --Help elle est implicite.
-  
-  - kubectl expose deployment nginx-deployment --port=8080 --target-port=80 --name=nginx-svc-cluster-ip
-   
-  ![Liaison-cont avec serv](https://user-images.githubusercontent.com/97112379/155770841-7519a0bc-1163-4273-bdd5-d393725212d0.png)
+ - kubectl expose deployment nginx-deployment --type ClusterIP --port=8080 --target-port=80 --name=nginx-svc-cluster-ip
 
- ![verif_serv](https://user-images.githubusercontent.com/97112379/155771145-2cb2fd9a-3489-4d0b-a8b4-54d38166d524.png)
  
+ 
+ ![service NodePort](https://user-images.githubusercontent.com/97112379/155808574-0960f71d-4fba-40f7-98e5-d696083b5ea8.png)
+
 
 3. Récupérer l’adresse IP du service et le stocker dans un fichier nommer service-ip.txt
 
 - kubectl get services nginx-svc-cluster-ip -o custom-columns=SERVICE-IP:.spec.clusterIP > service-ip.xt
 
+![Recup_IP](https://user-images.githubusercontent.com/97112379/155808822-0ec7deba-c771-4a01-a991-c325294d5bf6.png)
+
 4. Créer un pods nommé utils à partir d’une image nginx.
 
 - kubectl run utils --image nginx:latest
 
-- kubectl get podes
+- kubectl get pods
+
+![Pod-utils](https://user-images.githubusercontent.com/97112379/155802260-34139207-e4af-4a0e-bce4-8cc63721e019.png)
 
 
 6. Se connecter au pods utils ( kubectl exec -ti <nom-du-pod> – /bin/bash )
-  
+ 
+ - kubectl exec -ti utils /bin/bash
+ 
+ ![encore des soucis](https://user-images.githubusercontent.com/97112379/155810098-d84b8dba-b84a-4716-b6ba-768aa77d4371.png)
+
+ 
 7. Installer curl
+ 
+ Curl est déjà installé.
   
 8. Lancer un curl sur le service nginx-svc-cluster-ip.
+ 
+ ![tjrs des problemes](https://user-images.githubusercontent.com/97112379/155810492-1cef9558-46f6-4ddd-b6b8-2055ffbd0b72.png)
   
+ Je fini le TD et reviendrais sur cette problématique car tout semble correct !!!!
+ 
 9. Avec vos mots, expliquez le concept de service dans kubernetes.
+ 
+ - On peut expliquer le concept de service dans kubernetes comme un module au dessus des pods qui permet la communication inter pods ou d'exposer les services portés par les pods vers l'extérieur. Ceci en leurs attribue une adresse IP propre et ou un nom DNS unique, afin de permettre leur accessibilité et aussi équilibrer la charge entre eux.
+On a constaté que les pods ont une durée de vie très limité et sont à maintes reprises créés et détruits, ce qui par conséquent altère continuellement leurs adresses IP. Aussi le service confère une stabilité au niveau de l'accessibilité.
   
 10. Avec vos mots, expliquez les différences entre un service de type LoadBalancer, ClusterIp
 && NodePort.
+ 
+- ClusterIP : Il expose le Service sur une adresse IP interne du cluster. De ce fait, le service n'est accessible que depuis l'intérieur du cluster.
+ 
+- NodePort : Il expose le service vers l'extérieur du cluster à l'aide du NAT.
+ 
+- LoadBalancer : Il utilise l’équilibreur de charge des fournisseurs de cloud. Ainsi, les services NodePort et ClusterIP sont créés automatiquement et sont acheminés par l'équilibreur de charge externe.
   
 ## Exercice 6 - Manipulation de Configmaps.
 
@@ -232,19 +254,50 @@ Les autres sont disponible en cas de roolback.
 PRENOM=<votre-prenom> stocker le manifeste généré par kubectl dans un fichier
 nommer configmaps.yaml
   
-2. Créez votre configmaps avec la méthode déclarative.
+ 
+ Génération du confimaps avec les infos ci-dessus. 
+ 
+- kubectl create configmap userdata --from-literal=AGE=24 --from-literal=PRENOM=Willy -o yaml --dry-run=client > configmaps.yaml
+ 
+ ![generation du fichier confmap](https://user-images.githubusercontent.com/97112379/155819826-def80fed-c9bf-4518-b397-22b12bbc0014.png)
+
+ 
   
+2. Créez votre configmaps avec la méthode déclarative.
+- kubectl apply -f configmaps.yaml
+   configmap/userdata created
+ 
 3. Créer un pod nommé nginx-pod avec une image nginx
+ 
+ ![nginx-pod5-3](https://user-images.githubusercontent.com/97112379/155820370-698b3098-2c9e-47b6-abc0-a4d29bce1e0b.png)
+
   
 4. Stocker la valeur AGE du configmaps userdata dans la variable d’environnement
 USER_YEAR du pod nginx-pod
+ 
+ ![variable env5-4](https://user-images.githubusercontent.com/97112379/155820795-46b2f6c4-88cd-4f21-8c87-8592eb5712ed.png)
+
   
 5. Stocker la valeur PRENOM du configmaps userdata dans la variable d’environnement
 USER_FIRST_NAME du pod nginx-pod
   
+ ![variable env5-5](https://user-images.githubusercontent.com/97112379/155821057-225c7b04-ab82-4683-8c06-8961c3354546.png)
+  
 6. Créer votre pod avec la méthode déclarative.
+ 
+- kubectl apply -f nginx-pod.yaml
+ 
+ ![creation 5-6](https://user-images.githubusercontent.com/97112379/155821403-666556a8-f354-4a1a-89b5-6c03d7c298f8.png)
+
   
 7. Se connecter au pods en ssh avec la commande suivante ( kubect exec –ti <nom-du-pod>
 – /bin/bash )
+ 
+ ![Probleme avec mon bash](https://user-images.githubusercontent.com/97112379/155821505-24eccee8-28ee-45ee-a163-6e2e368fbbc5.png)
+
   
-8. Afficher les variables d’environnement (USER_FIRST_NAME & USER_YEAR
+8. Afficher les variables d’environnement (USER_FIRST_NAME & USER_YEAR)
+
+ /# echo "$USER_FIRST_NAME a $USER_YEAR ans"
+
+ Le résultat devrait être : willy a 24 ans
