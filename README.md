@@ -2,8 +2,8 @@
 TD3 Kubernetes Ingénieur de spécialité Télécommunication et Informatique
 
 ##
- Exercice 1 - Installation
-## 
+## Exercice 1 - Installation
+
 1. Installer la dernière version de Minikube
  
 ![Version minikube](https://user-images.githubusercontent.com/97112379/155618716-0742efb8-870c-402e-91dc-5091c699b972.png)
